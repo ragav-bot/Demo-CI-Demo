@@ -1,0 +1,5 @@
+---
+  buildpacks:
+    - "https://github.com/cloudfoundry/java-buildpack.git"
+  name: Demo-Discover
+  path: build/libs/Demo-Discover-0.1.0.jar
