@@ -6,6 +6,7 @@ public class SampleConsumerApplicationTests {
 
 	@Test
 	public void contextLoads() {
+		//sample test
 	}
 
 }
