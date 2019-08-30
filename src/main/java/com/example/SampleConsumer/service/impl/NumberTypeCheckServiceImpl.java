@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EvenNumberCheckServiceImpl implements NumberTypeCheckService {
+public class NumberTypeCheckServiceImpl implements NumberTypeCheckService {
 
-    Logger log = LoggerFactory.getLogger(EvenNumberCheckServiceImpl.class);
+    Logger log = LoggerFactory.getLogger(NumberTypeCheckServiceImpl.class);
 
     @Override
     public String checkNumberType(Integer number) {

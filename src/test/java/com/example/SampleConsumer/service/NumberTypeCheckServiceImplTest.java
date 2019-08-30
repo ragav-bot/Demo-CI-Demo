@@ -1,6 +1,6 @@
 package com.example.SampleConsumer.service;
 
-import com.example.SampleConsumer.service.impl.EvenNumberCheckServiceImpl;
+import com.example.SampleConsumer.service.impl.NumberTypeCheckServiceImpl;
 import com.example.SampleConsumer.util.NumberType;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,7 +15,7 @@ public class NumberTypeCheckServiceImplTest {
 
     @Before
     public void setup(){
-        numberTypeCheckService = new EvenNumberCheckServiceImpl();
+        numberTypeCheckService = new NumberTypeCheckServiceImpl();
     }
 
     @Test
