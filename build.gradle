@@ -18,6 +18,10 @@ bootJar {
 	version =  '0.1.0'
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '5.4.1'
+}
+
 repositories {
 	jcenter()
 	mavenLocal()
