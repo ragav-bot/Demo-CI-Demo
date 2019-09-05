@@ -1,20 +1,50 @@
-pipeline {
-    agent any
-    stages {
-        stage('Build') {
-            steps {
-                echo 'Building..'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
-        }
+node{
+    environment {
+    PATH = "C:\\Program Files\\Git\\usr\\bin;C:\\Program Files\\Git\\bin;${env.PATH}"
     }
+    slackSend channel: '#cicd', message: 'Demo Pipeline started'
+    stage ('checkout'){
+        // checkout([$class: 'GitSCM', branches: [[name: '*/develop']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'GIT', url: 'https://github.com/ragav-bot/Demo-CI-Demo.git']]])
+    }
+    stage ('code style'){
+        slackSend channel: '#cicd', message: 'Checkout from GIT completed'
+         echo 'code style..'
+    }
+
+     stage('build') {
+                slackSend channel: '#cicd', message: 'Check Style completed'
+                script {
+
+                        sh './gradlew clean build -x test --no-daemon' //run a gradle task
+                }
+        }
+
+     stage('Unit & Integration Tests') {
+                 slackSend channel: '#cicd', message: 'Code compilation and build is successful'
+                script {
+
+                        sh './gradlew test --no-daemon' //run a gradle task
+                }
+        }
+     stage ('code quality'){
+        script {
+                         slackSend channel: '#cicd', message: 'Unit tests and Integration tests execution is successful'
+                        sh './gradlew sonarqube --no-daemon' //run a gradle task
+                }
+    }
+
+     stage ('publish artifact'){
+         slackSend channel: '#cicd', message: 'Sonar Analysis is successful. Find the report here http://localhost:9000/projects'
+        echo 'publishing..'
+    }
+
+     stage ('deploy to dev'){
+      slackSend channel: '#cicd', message: 'Artifact successfully published to Nexus'
+      //pushToCloudFoundry cloudSpace: 'development VIEW APP', credentialsId: 'CF', organization: 'Demo-CD-Discover', target: 'https://demo-discover.cfapps.io/'
+    }
+     stage ('functional test'){
+      slackSend channel: '#cicd', message: 'Application successfully deployed and running in https://demo-discover.cfapps.io/'
+        echo 'deploying..'
+    }
+    slackSend channel: '#cicd', message: 'Demo Pipeline completed successfully and executed the Functional tests'
 }
