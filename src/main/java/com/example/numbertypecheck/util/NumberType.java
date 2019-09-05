@@ -1,4 +1,4 @@
-package com.example.SampleConsumer.util;
+package com.example.numbertypecheck.util;
 
 public enum NumberType {
     EVEN("Even"),

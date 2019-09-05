@@ -1,7 +1,7 @@
-package com.example.SampleConsumer.service;
+package com.example.numbertypecheck.service;
 
-import com.example.SampleConsumer.service.impl.NumberTypeCheckServiceImpl;
-import com.example.SampleConsumer.util.NumberType;
+import com.example.numbertypecheck.service.impl.NumberTypeCheckServiceImpl;
+import com.example.numbertypecheck.util.NumberType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

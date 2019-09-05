@@ -1,4 +1,4 @@
-package com.example.SampleConsumer;
+package com.example.numbertypecheck;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

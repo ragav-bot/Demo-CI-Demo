@@ -1,6 +1,6 @@
-package com.example.SampleConsumer.controller;
+package com.example.numbertypecheck.controller;
 
-        import com.example.SampleConsumer.service.NumberTypeCheckService;
+        import com.example.numbertypecheck.service.NumberTypeCheckService;
         import org.junit.Before;
         import org.junit.Test;
         import org.junit.runner.RunWith;

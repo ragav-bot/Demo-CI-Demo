@@ -1,4 +1,4 @@
-package com.example.SampleConsumer.controller;
+package com.example.numbertypecheck.controller;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,7 +44,7 @@ public class NumberTypeCheckerControllerIT {
         HttpEntity<String> entity = new HttpEntity<String>(null, headers);
         ResponseEntity<String> response = restTemplate.exchange(
                 createURLWithPort("validate/numberType/abc"), HttpMethod.POST, entity, String.class);
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
+        Assert.assertEquals(HttpStatus.BAD_REQUEST,response.getStatusCode());
 
     }
 
@@ -73,7 +73,7 @@ public class NumberTypeCheckerControllerIT {
         HttpEntity<String> entity = new HttpEntity<String>(null, headers);
         ResponseEntity<String> response = restTemplate.exchange(
                 createURLWithPort("validate/numberType?number=abc"), HttpMethod.POST, entity, String.class);
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
+        Assert.assertEquals(HttpStatus.BAD_REQUEST,response.getStatusCode());
 
     }
 

@@ -1,6 +1,6 @@
-package com.example.SampleConsumer.controller;
+package com.example.numbertypecheck.controller;
 
-import com.example.SampleConsumer.service.NumberTypeCheckService;
+import com.example.numbertypecheck.service.NumberTypeCheckService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class NumberTypeCheckerController {
      */
     @RequestMapping(value = "/validate/numberType/{number}", method = RequestMethod.POST)
     public String checkNumberTypeFromPath(@PathVariable ("number") @NotBlank  Integer number) {
-        log.info("Inside checkNumberTypeFromPath:: InputValue ==>"+number);
+        log.info("Inside checkNumberTypeFromPath:: InputValue :: {}",number);
         return numberTypeCheckService.checkNumberType(number);
     }
 
@@ -34,7 +34,7 @@ public class NumberTypeCheckerController {
      */
     @RequestMapping(value = "/validate/numberType", method = RequestMethod.POST)
     public String checkNumberTypeFromQuery(@RequestParam ("number") @NotBlank  Integer number) {
-        log.info("Inside checkNumberTypeFromQuery:: InputValue ==>"+number);
+        log.info("Inside checkNumberTypeFromQuery:: InputValue :: {}",number);
         return numberTypeCheckService.checkNumberType(number);
     }
 }

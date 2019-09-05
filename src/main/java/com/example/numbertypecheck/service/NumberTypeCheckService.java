@@ -1,4 +1,4 @@
-package com.example.SampleConsumer.service;
+package com.example.numbertypecheck.service;
 
 public interface NumberTypeCheckService {
 
