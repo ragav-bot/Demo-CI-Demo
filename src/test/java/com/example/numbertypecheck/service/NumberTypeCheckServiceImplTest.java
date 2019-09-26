@@ -25,7 +25,7 @@ public class NumberTypeCheckServiceImplTest {
 
         String result;
         result = numberTypeCheckService.checkNumberType(3);
-        Assert.assertEquals(result, NumberType.ODD.getValue());
+        Assert.assertEquals(NumberType.ODD.getValue(),result );
     }
 
     @Test
@@ -33,7 +33,7 @@ public class NumberTypeCheckServiceImplTest {
 
         String result;
         result = numberTypeCheckService.checkNumberType(2);
-        Assert.assertEquals(result, NumberType.EVEN.getValue());
+        Assert.assertEquals(NumberType.EVEN.getValue(),result);
     }
 
 }
