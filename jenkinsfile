@@ -1,65 +1,61 @@
-node {
-	environment {
-		PATH = "C:\\Program Files\\Git\\usr\\bin;C:\\Program Files\\Git\\bin;${env.PATH}"
-	}
+node{
+    environment {
+    PATH = "C:\\Program Files\\Git\\usr\\bin;C:\\Program Files\\Git\\bin;${env.PATH}"
+    }
+    def build = BUILD_URL
+    def sonar = build + '/execution/node/3/ws/build/jacocoHtml/index.html'
+    echo sonar
+    slackSend channel: '#cicd', message: 'Demo_Pipeline build has started '+build
+    stage ('checkout'){
+         checkout([$class: 'GitSCM', branches: [[name: '*/develop']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'GIT', url: 'https://github.com/ragav-bot/Demo-CI-Demo.git']]])
+    }
+    stage ('code style'){
+        slackSend channel: '#cicd', message: 'Checkout from GIT completed'
+         echo 'code style..'
+    }
 
-	slackSend channel: '#cicd', message: 'Demo Pipeline started'
-	stage('checkout') {
-		checkout([$class: 'GitSCM', branches: [
-			[name: '*/develop']
-		], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [
-			[credentialsId: 'GIT', url: 'https://github.com/ragav-bot/Demo-CI-Demo.git']
-		]])
-	}
-	stage('code style') {
-		slackSend channel: '#cicd', message: 'Checkout from GIT completed'
-		echo 'code style..'
-	}
+     stage('build') {
+                slackSend channel: '#cicd', message: 'Check Style completed'
+                script {
 
-	stage('build') {
-		slackSend channel: '#cicd', message: 'Check Style completed'
-		script {
+                       sh './gradlew clean build -x test --no-daemon' //run a gradle task
+                }
+        }
 
-			sh './gradlew clean build -x test --no-daemon' //run a gradle task
-		}
-	}
+     stage('Unit & Integration Tests') {
+                 slackSend channel: '#cicd', message: 'Code compilation and build is successful'
+                script {
 
-	stage('Unit & Integration Tests') {
-		slackSend channel: '#cicd', message: 'Code compilation and build is successful'
-		script {
+                        sh './gradlew test jacocoTestReport --no-daemon' //run a gradle task
+                }
+        }
+     stage ('code quality'){
+        script {
 
-			sh './gradlew test --no-daemon' //run a gradle task
-		}
-	}
-	stage('code quality') {
-		script {
-			slackSend channel: '#cicd', message: 'Unit tests and Integration tests execution is successful'
-			sh './gradlew sonarqube --no-daemon' //run a gradle task
-		}
-	}
+                         slackSend channel: '#cicd', message: 'Unit tests and Integration tests execution is successful. Find the report here '+sonar
+                        sh './gradlew sonarqube --no-daemon' //run a gradle task
+                }
+    }
 
-	stage('publish artifact') {
-		slackSend channel: '#cicd', message: 'Sonar Analysis is successful. Find the report here http://localhost:9000/projects'
-		echo 'publishing..'
-	}
+     stage ('publish artifact'){
+         slackSend channel: '#cicd', message: 'Sonar Analysis is successful. Find the report here http://localhost:9000/dashboard?id=org.sonarqube%3Ajava-gradle-simple'
+        echo 'publishing..'
+    }
 
-	stage('deploy to dev') {
-		slackSend channel: '#cicd', message: 'Artifact successfully published to Nexus'
-		withCredentials([
-			[$class: 'UsernamePasswordMultiBinding', credentialsId: 'CF',
-				usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD'
-			]
-		]) {
+     stage ('deploy to dev'){
+         slackSend channel: '#cicd', message: 'Artifact successfully published to Nexus'
+         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'CF',
+usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
 
-			sh ' cf login -a https://api.run.pivotal.io -u $USERNAME -p $PASSWORD -o Demo-CD-Discover  -s development'
-			sh 'cf push'
+sh ' cf login -a https://api.run.pivotal.io -u $USERNAME -p $PASSWORD -o Demo-CD-Discover  -s development'
+sh 'cf push'
 
 
-			//pushToCloudFoundry cloudSpace: 'development', credentialsId: 'CF', organization: 'Demo-CD-Discover', target: 'https://api.run.pivotal.io'
-		}
-	}
-	stage('functional test') {
-		slackSend channel: '#cicd', message: 'Application successfully deployed and running in https://demo-discover.cfapps.io/'
-	}
-	slackSend channel: '#cicd', message: 'Demo Pipeline completed successfully and executed the Functional tests'
+      //pushToCloudFoundry cloudSpace: 'development', credentialsId: 'CF', organization: 'Demo-CD-Discover', target: 'https://api.run.pivotal.io'
+    }
+     }
+     stage ('functional test'){
+      slackSend channel: '#cicd', message: 'Application successfully deployed and running in https://demo-discover.cfapps.io/'
+    }
+    slackSend channel: '#cicd', message: 'Demo Pipeline completed successfully and executed the Functional tests'
 }
