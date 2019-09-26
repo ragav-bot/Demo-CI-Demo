@@ -19,7 +19,7 @@ public class NumberTypeCheckServiceImpl implements NumberTypeCheckService {
      */
     @Override
     public String checkNumberType(Integer number) {
-        log.info( "Inside checkNumberType:: InputValue ::{} ", number);
+        log.info( "Inside checkNumberType:: InputValue ::::{} ", number);
         return number % 2 == 0 ? NumberType.EVEN.getValue() : NumberType.ODD.getValue();
     }
 }
