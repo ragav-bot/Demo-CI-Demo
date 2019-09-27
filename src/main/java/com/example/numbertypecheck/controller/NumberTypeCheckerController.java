@@ -23,7 +23,7 @@ public class NumberTypeCheckerController {
      */
     @RequestMapping(value = "/validate/numberType/{number}", method = RequestMethod.POST)
     public String checkNumberTypeFromPath(@PathVariable ("number") @NotBlank  Integer number) {
-        log.info("Inside checkNumberTypeFromPath:: InputValue ::: {}",number);
+        log.info("Inside checkNumberTypeFromPath:: Inputvalue ::: {}",number);
         return numberTypeCheckService.checkNumberType(number);
     }
 
